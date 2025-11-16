@@ -1,0 +1,33 @@
+.home-container {
+  max-width: 600px;
+  margin: 80px auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.search-box {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  width: 70%;
+  font-size: 1rem;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: red;
+}

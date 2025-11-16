@@ -1,0 +1,19 @@
+<div class="home-container">
+  <h1>Company Information Search</h1>
+
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="query"
+      placeholder="Enter company name..."
+    />
+    <button (click)="onSearch()">Search</button>
+  </div>
+
+  <div *ngIf="loading" class="loading">Searching...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <ul *ngIf="results.length">
+    <li *ngFor="let result of results">{{ result }}</li>
+  </ul>
+</div>
