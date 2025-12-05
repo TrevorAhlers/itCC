@@ -1,5 +1,6 @@
 # app.py
-from flask import Flask, render_template, request, jsonify
+import csv
+from flask import Flask, render_template, request, jsonify, make_response
 from scraper import get_stock_data
 from database import init_db, add_search, get_history
 
@@ -33,6 +34,22 @@ def api_ticker(ticker):
     data = get_stock_data(ticker)
     return jsonify(data)
 
+@app.route("/export_csv")
+def export_csv():
+    history = get_history()
+
+    # create CSV in memory
+    si = []
+    si.append(["Ticker", "Price", "Change", "Timestamp"])
+
+    for row in history:
+        si.append(list(row))
+
+    # return CSV file to user
+    response = make_response("\n".join([",".join(map(str, s)) for s in si]))
+    response.headers["Content-Disposition"] = "attachment; filename=stock_history.csv"
+    response.headers["Content-Type"] = "text/csv"
+    return response
 
 if __name__ == "__main__":
     # Required for AWS EC2 deployment
