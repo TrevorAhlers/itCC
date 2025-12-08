@@ -1,15 +1,13 @@
 # app.py
 import csv
-import os
+
 from flask import Flask, render_template, request, jsonify, make_response
 from scraper import get_stock_data
 from database import init_db, add_search, get_history
-from flask_cors import CORS
-
 
 
 app = Flask(__name__)
-CORS(app)
+
 # Initialize DB when the app starts
 init_db()
 
@@ -30,13 +28,7 @@ def index():
 def history():
     entries = get_history()
     return render_template("history.html", history=entries)
-    
-@app.route("/history/json")
-def history_json():
-    entries = get_history()
-    # Convert to list of dicts if needed
-    data = [{"ticker": r[0], "price": r[1], "change": r[2], "timestamp": r[3]} for r in entries]
-    return jsonify(data)
+
 
 @app.route("/api/<ticker>")
 def api_ticker(ticker):
