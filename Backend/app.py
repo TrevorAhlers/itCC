@@ -29,6 +29,21 @@ def history():
     entries = get_history()
     return render_template("history.html", history=entries)
 
+@app.route("/api/history")
+def api_history():
+    rows = get_history()
+
+    history_list = []
+    for r in rows:
+        history_list.append({
+            "ticker": r[0],
+            "price": r[1],
+            "change": r[2],
+            "timestamp": r[3]
+        })
+
+    return jsonify(history_list)
+
 
 @app.route("/api/<ticker>")
 def api_ticker(ticker):
