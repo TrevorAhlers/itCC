@@ -31,31 +31,37 @@ export class HomeComponent {
   window.open(url, '_blank'); // opens the CSV file in a new tab for download
  }
 
-  onSearch() {
-    if (!this.query.trim()) {
-      this.error = 'Please enter a company name.';
-      this.results = [];
-      return;
-    }
-
-    
-
-    this.error = null;
-    this.loading = true;
+onSearch() {
+  if (!this.query.trim()) {
+    this.error = 'Please enter a company name.';
     this.results = [];
-    this.stockData = null;
-    this.cd.detectChanges();
-
-    this.http.get(`http://localhost:5000/api/${this.query}`).subscribe({
-      next: (data: any) => {
-        console.log("API response:", data); 
-        this.stockData = data;
-        this.loading = false;
-      },
-      error: (err: any) => {
-        this.error = "Stock API error";
-        this.loading = false;
-      }
-    });
+    return;
   }
+
+  this.error = null;
+  this.loading = true;
+  this.results = [];
+  this.stockData = null;
+  this.cd.detectChanges();
+
+  this.http.get(`http://localhost:5000/api/${this.query}`).subscribe({
+    next: (data: any) => {
+      console.log("API response:", data);
+
+      if (data.error) {
+        this.error = data.error;
+        this.loading = false;
+        return;
+      }
+
+      this.stockData = data;
+      this.loading = false;
+      this.cd.detectChanges();
+    },
+    error: (err: any) => {
+      this.error = "Stock API error";
+      this.loading = false;
+    }
+  });
+}
 }

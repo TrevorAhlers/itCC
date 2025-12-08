@@ -3,6 +3,7 @@
     <button (click)="goToHistory()">View Search History</button>
   </div>
   <h1>Company Information Search</h1>
+  <p>Enter Ticker Symbol for Company</p>
 
   <div class="search-box">
     <input
@@ -21,13 +22,13 @@
   </ul>
 
 
-  <div *ngIf="stockData" class="stock-result">
-    <h2>{{ stockData.ticker }}</h2>
-    <p>Price: {{ stockData.price }}</p>
-    <p>Change: {{ stockData.change }}</p>
-    <p>Volume: {{ stockData.volume }}</p>
-    <p>Day Range: {{ stockData.day_range }}</p>
-  </div>
+<div *ngIf="stockData" class="stock-result">
+  <h2>{{ stockData.ticker }}</h2>
+  <p>Price: ${{ stockData.price | number:'1.2-2' }}</p>
+  <p>Change: {{ stockData.change | number:'1.2-2' }}%</p>
+  <p>Volume: {{ stockData.volume | number }}</p>
+  <p>Day Range: {{ stockData.day_range }}</p>
+</div>
 
   <div class="export-csv">
     <button (click)="exportCSV()">Export History to CSV</button>

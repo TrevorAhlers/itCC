@@ -1,32 +1,24 @@
-import requests
-from bs4 import BeautifulSoup
+import yfinance as yf
 
-def get_stock_data(ticker):
-    url = f"https://finance.yahoo.com/quote/{ticker}"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    res = requests.get(url, headers=headers)
-    soup = BeautifulSoup(res.text, "html.parser")
-
+def get_stock_data(ticker: str):
+    ticker = ticker.upper().strip()
     try:
-        # price + change
-        price = soup.find("fin-streamer", {"data-field": "regularMarketPrice"}).text
-        change = soup.find("fin-streamer", {"data-field": "regularMarketChangePercent"}).text
+        stock = yf.Ticker(ticker)
+        info = stock.info
 
-        # Day's Range
-        day_range_label = soup.find("td", string="Day's Range")
-        day_range = day_range_label.find_next("td").text if day_range_label else "N/A"
-
-        # Volume
-        volume_label = soup.find("td", string="Volume")
-        volume = volume_label.find_next("td").text if volume_label else "N/A"
+        # Check if info is valid
+        if not info or "regularMarketPrice" not in info:
+            return {"error": f"Invalid ticker or no data found for '{ticker}'"}
 
         return {
             "ticker": ticker,
-            "price": price,
-            "change": change,
-            "day_range": day_range,
-            "volume": volume
+            "price": info.get("regularMarketPrice", "N/A"),
+            "change": info.get("regularMarketChangePercent", "N/A"),
+            "day_range": f"{info.get('dayLow', 'N/A')} - {info.get('dayHigh', 'N/A')}",
+            "volume": info.get("volume", "N/A"),
         }
 
-    except Exception:
-        return {"error": f"Could not retrieve data for {ticker}"}
+    except Exception as e:
+        return {"error": f"Could not retrieve data for '{ticker}': {e}"}
+
+
