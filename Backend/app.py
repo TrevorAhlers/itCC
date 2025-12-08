@@ -4,6 +4,9 @@ from flask_cors import CORS
 from flask import Flask, render_template, request, jsonify, make_response
 from scraper import get_stock_data
 from database import init_db, add_search, get_history
+import os
+from datetime import datetime
+import json
 
 
 
@@ -11,6 +14,21 @@ app = Flask(__name__)
 CORS(app)
 # Initialize DB when the app starts
 init_db()
+HISTORY_FILE = "history.json"
+
+if not os.path.exists(HISTORY_FILE) or os.path.getsize(HISTORY_FILE) == 0:
+    with open(HISTORY_FILE, "w") as f:
+        json.dump([], f)
+
+with open(HISTORY_FILE, "r") as f:
+    history = json.load(f)
+
+if os.path.exists(HISTORY_FILE):
+    with open(HISTORY_FILE, "r") as f:
+        history = json.load(f)
+else:
+    history = []
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -19,16 +37,16 @@ def index():
         ticker = request.form["ticker"].upper()
         data = get_stock_data(ticker)
 
-        # Save valid results to history
+        
         if "error" not in data:
             add_search(data["ticker"], data["price"], data["change"],data["day_range"],data["volume"])
     return render_template("index.html", data=data)
 
 
-@app.route("/history")
-def history():
-    entries = get_history()
-    return render_template("history.html", history=entries)
+
+@app.route("/history/json")
+def get_history():
+    return jsonify(history)
 
 @app.route("/api/history")
 def api_history():
@@ -50,8 +68,18 @@ def api_history():
 
 @app.route("/api/<ticker>")
 def api_ticker(ticker):
-    ticker = ticker.upper()
+    ticker = ticker.upper().strip()
     data = get_stock_data(ticker)
+
+    if "error" not in data:
+        
+        data["time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        history.append(data)
+
+        
+        with open(HISTORY_FILE, "w") as f:
+            json.dump(history, f, indent=2)
+
     return jsonify(data)
 
 @app.route("/export_csv")

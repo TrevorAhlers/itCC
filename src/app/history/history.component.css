@@ -1,0 +1,80 @@
+.history-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.back-btn {
+  margin-bottom: 15px;
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px 25px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #fafafa;
+}
+
+.positive {
+  color: green;
+  font-weight: bold;
+}
+
+.negative {
+  color: red;
+  font-weight: bold;
+}
+
+.loading,
+.error,
+.no-history {
+  margin-top: 15px;
+  font-style: italic;
+}
+
+.no-history {
+  color: #555;
+}
+
+.export-btn {
+  margin-bottom: 15px;
+  padding: 8px 25px;
+  cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.export-btn:hover {
+  background-color: #218838;
+}
+
