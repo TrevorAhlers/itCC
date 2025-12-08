@@ -1,14 +1,15 @@
 # app.py
 import csv
+import os
 from flask import Flask, render_template, request, jsonify, make_response
 from scraper import get_stock_data
 from database import init_db, add_search, get_history
-from flask_cors import CORS
 
-
+print("Current working directory:", os.getcwd())
+print("Templates folder contents:", os.listdir(os.path.join(os.getcwd(), "templates")))
 
 app = Flask(__name__)
-CORS(app)
+
 # Initialize DB when the app starts
 init_db()
 
