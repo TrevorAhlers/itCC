@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,11 @@ export class HomeComponent {
   error: string | null = null;
   stockData: any = null;
 
-  constructor(private http: HttpClient, private cd: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private cd: ChangeDetectorRef, private router: Router) {}
+
+    goToHistory() {
+    this.router.navigate(['/history']);
+  }
 
   exportCSV() {
   const url = 'http://localhost:5000/export_csv';

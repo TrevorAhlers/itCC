@@ -1,4 +1,7 @@
 <div class="home-container">
+  <div class="navigation">
+    <button (click)="goToHistory()">View Search History</button>
+  </div>
   <h1>Company Information Search</h1>
 
   <div class="search-box">
@@ -23,7 +26,7 @@
     <p>Price: {{ stockData.price }}</p>
     <p>Change: {{ stockData.change }}</p>
     <p>Volume: {{ stockData.volume }}</p>
-    <p>Day Range: {{ stockData.dayRange }}</p>
+    <p>Day Range: {{ stockData.day_range }}</p>
   </div>
 
   <div class="export-csv">

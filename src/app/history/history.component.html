@@ -1,0 +1,23 @@
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<table *ngIf="history.length">
+  <thead>
+    <tr>
+      <th>Ticker</th>
+      <th>Price</th>
+      <th>Change</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let entry of history">
+      <td>{{ entry.ticker }}</td>
+      <td>{{ entry.price }}</td>
+      <td>{{ entry.change }}</td>
+      <td>{{ entry.timestamp }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="!history.length">No history available.</div>
+<button (click)="goToHome()">Back to Home</button>
